@@ -44,7 +44,6 @@ for vi=1:nV
 
             D(vi) = D(vi)+1;
         end
-
     end
 end
 
