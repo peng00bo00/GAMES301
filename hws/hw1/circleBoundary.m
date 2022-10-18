@@ -1,6 +1,5 @@
 function VB = circleBoundary(B)
-% Place the boundary points on a circle
-
+%% Place the boundary points on a circle
 nB = size(B, 2);
 VB = zeros(nB, 2);
 

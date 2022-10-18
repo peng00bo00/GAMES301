@@ -38,9 +38,10 @@ for vi=1:nV
             [bj, bk, bl] = findBaryCententricCoordinate(pj, pk, pl);
 
             %% add to sparse matrix
-            I = [I, vi, vi, vi];
-            J = [J, vj, vk, vl];
+            I     = [    I, vi, vi, vi];
+            J     = [    J, vj, vk, vl];
             value = [value,-bj,-bk,-bl];
+
             D(vi) = D(vi)+1;
         end
 

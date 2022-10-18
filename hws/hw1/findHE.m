@@ -23,7 +23,8 @@ for i=1:nF
     NEXT(3*i-2) = 3*i-1;
     NEXT(3*i-1) = 3*i;
     NEXT(3*i  ) = 3*i-2;
-
+    
+    %% vertex to half-edge pointer
     if VHE(vi) < 0
         VHE(vi) = 3*i-2;
     end
