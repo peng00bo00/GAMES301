@@ -6,6 +6,7 @@ Dm = (x1(2:end, :) - x1(1, :))';
 Ds = (x2(2:end, :) - x2(1, :))';
 
 %% J * Dm = Ds
-J = Dm \ Ds;
+% J = Dm \ Ds;
+J = Ds * inv(Dm);
 
 end
