@@ -1,3 +1,8 @@
+addpath("io\");
+addpath("mesh\");
+addpath("src\");
+addpath("utils\");
+
 file_cow = 'mesh/cow.obj';
 
 [v, f, ~, ~] = readObj(file_cow, false);
@@ -14,7 +19,7 @@ wolfe_c2 = 0.9;
 
 %% initialize
 % uv = conformal(v, f, B);
-uv = tutte(v, f, B);
+% uv = tutte(v, f, B);
 X = reshape(uv, [nv * 2, 1]);
 
 flip_id = check_flip(v, f, uv);

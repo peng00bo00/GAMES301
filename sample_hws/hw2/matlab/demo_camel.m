@@ -1,9 +1,13 @@
+% clear;clc;
+
 addpath("io\");
 addpath("mesh\");
 addpath("src\");
 addpath("utils\");
 
 file_camel = 'mesh/camelhead.obj';
+% file_camel = 'mesh/balls.obj';
+
 
 [v, f, ~, ~] = readObj(file_camel, false);
 [B, H] = findBoundary(v, f);
@@ -18,8 +22,8 @@ wolfe_c1 = 5e-6;
 wolfe_c2 = 0.9;
 
 %% initialize
-uv = conformal(v, f, B);
-% uv = tutte(v, f, B);
+% uv = conformal(v, f, B);
+uv = tutte(v, f, B);
 X = reshape(uv, [nv * 2, 1]);
 
 flip_id = check_flip(v, f, uv);
