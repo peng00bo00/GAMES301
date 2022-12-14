@@ -1,4 +1,4 @@
-function uv = projectedNewtonSolver(V, F, uv, maxSteps, maxIter, lam, c, gamma)
+function uv = projectedNewtonSolver(V, F, uv, maxSteps, maxIter, lam, c, tau)
 %% One step projected Newton solver
 %% Args:
 %%      V[nV, 3]: vertex coordinates in 3D
@@ -8,7 +8,7 @@ function uv = projectedNewtonSolver(V, F, uv, maxSteps, maxIter, lam, c, gamma)
 %%      maxIter: maximum iteration in line search
 %%      lam: positive-definite parameter
 %%      c: search control parameters
-%%      gamma: shrinkage factor in line search
+%%      tau: shrinkage factor in line search
 %% Returns:
 %%      uv_new[nV, 2]: updated uv coordinates
 
@@ -16,7 +16,7 @@ nV = size(V, 1);
 nF = size(F, 1);
 
 %% reusable parameters
-As    = zeros(nF, 1);          %% triangle area
+As    = zeros(nF, 1);       %% triangle area
 X1    = zeros(3, 2, nF);    %% triangle at local frame
 PfPxs = zeros(4, 6, nF);    %% PfPx at different triangles
 
@@ -32,10 +32,8 @@ end
 for i=1:maxSteps
     fprintf('\nstep %d\n', i);
     
-    tic;
-    [uv, stop] = projectedNewtonStep(V, F, uv, X1, As, PfPxs, maxIter, lam, c, gamma);
-    toc;
-
+    [uv, stop] = projectedNewtonStep(V, F, uv, X1, As, PfPxs, maxIter, lam, c, tau);
+    
     if stop
         break
     end

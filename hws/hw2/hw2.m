@@ -6,14 +6,16 @@ addpath("./src");
 addpath("./utils");
 
 %% parameters
-maxSteps= 3000;
+maxSteps= 100;
 maxIter = 100;
 lam     = 1e-5;
-c       = 1e-4;
-gamma   = 0.9;
+c       = 1e-5;
+tau     = 0.9;
 
 %% read mesh
-[V, F] = readObj('./mesh/camelhead.obj');
+meshName = 'ex';
+path = fullfile('./mesh/', meshName);
+[V, F] = readObj(path);
 [B, H] = findBoundary(V, F);
 nV = size(V, 1);
 
@@ -29,11 +31,14 @@ figure;
 h = drawmesh(F, uv, B);
 
 %% projected Newton solver
-uv = projectedNewtonSolver(V, F, uv, maxSteps, maxIter, lam, c, gamma);
-% uv = projectedNewtonSolverSave(V, F, uv, 1000, maxIter, lam, c, gamma, './gif/hand');
+uv = projectedNewtonSolver(V, F, uv, maxSteps, maxIter, lam, c, tau);
+
+% path = fullfile('./gif/', meshName);
+% uv = projectedNewtonSolverSave(V, F, uv, maxSteps, maxIter, lam, c, gamma, path);
 
 %% drawing
 figure;
 h = drawmesh(F, uv, B);
 
-% writeOBJ("./results/cow.obj", [uv, zeros(nV, 1)], F);
+path = fullfile('./results/', [meshName '.obj']);
+writeOBJ(path, [uv, zeros(nV, 1)], F);

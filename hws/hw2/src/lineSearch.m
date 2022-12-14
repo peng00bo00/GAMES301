@@ -1,5 +1,19 @@
-function [uv_new, Enew, alpha] = lineSearch(F, uv, X1, As, d, g, maxIter, c, gamma)
+function [uv_new, Enew, alpha] = lineSearch(F, uv, X1, As, d, g, maxIter, c, tau)
 %% Line search to update parameterization
+%% Args:
+%%      F[nF, 3]: face connectivity
+%%      uv[nV, 2]: vertex coordinates in 2D
+%%      X1[3, 2, nF]: rest pose of each triangle
+%%      As[nF, 1]: triangle areas
+%%      d[nV, 2]: update direction
+%%      g[nV, 2]: gradients
+%%      maxIter: maximum iteration
+%%      c: search control parameter
+%%      tau: shrinkage factor in line search
+%% Returns:
+%%      uv_new[nV, 2]: updated uv coordiantes
+%%      Enew: updated energy
+%%      alpha: optimal step size
 
 %% initialize step size with flip check
 alpha = initStepSize(F, uv, d);
@@ -20,55 +34,21 @@ for i=1:maxIter
         return;
     end
 
-    alpha = alpha * gamma;
+    alpha = alpha * tau;
 end
 
-% c1 = 5e-6;
-% c2 = 0.9;
-% 
-% nV = size(V, 1);
-% 
-% alpha_max = 0.99*initStepSize(F, uv, d);
-% alpha_min = 0.0;
-% alpha     = min([0.8*alpha_max, 1.0]);
-% 
-% Eold = computeTotalSDEnergy(F, uv, X1, As);
-% Gold = sum(d .* g, "all");
-% 
-% uv_new = uv + alpha * d;
-% Enew = computeTotalSDEnergy(F, uv_new, X1, As);
-% 
-% for i=1:maxIter
-%     if Enew > Eold + c1*alpha*Gold
-%         alpha_max = alpha;
-%         alpha = (alpha_min + alpha_max) / 2;
-%     else
-%         grad = computeGradient(V, F, uv, X1, As, PfPxs);
-%         grad = reshape(grad, [nV, 2]);
-% 
-%         Gnew = sum(d .* grad, "all");
-% 
-%         if abs(Gnew) > c2 * abs(Gold)
-%             if Gnew > 0
-%                 alpha_max = alpha;
-%             else
-%                 alpha_min = alpha;
-%             end
-% 
-%             alpha = (alpha_min + alpha_max) / 2;
-%         else
-%             return
-%         end
-%     end
-% 
-%     uv_new = uv + alpha * d;
-%     Enew = computeTotalSDEnergy(F, uv_new, X1, As);
-% end
-
 end
+
 
 function alpha = initStepSize(F, uv, d)
 %% A helper function to find initial step size in line search
+%% Args:
+%%      F[nF, 3]: face connectivity
+%%      uv[nV, 2]: vertex coordinates in 2D
+%%      d[nV, 2]: update direction
+%% Returns:
+%%      alpha: maximum allowed step size
+
 alpha = inf;
 nF = size(F, 1);
 
@@ -80,6 +60,7 @@ for i=1:nF
 end
 
 end
+
 
 function alpha = flipCheckStepSize(x, dx)
 %% A helper function to find maximum step size to prevent flip
@@ -94,33 +75,23 @@ alpha = inf;
 Ds= x(2:end, :) - x(1, :);
 D = dx(2:end, :) - dx(1, :);
 
-M = D * matrixInv2x2(Ds);
-[~, S, ~] = svd_rv(M);
+%% quadratic equation
+detDs= det(Ds);
+detD = det(D);
 
-t1 = max(diag(S));
-if t1 <= 0
+A = detD;
+B = detDs + detD - det(Ds-D);
+C = detDs;
+
+delta = B*B - 4*A*C;
+
+if delta < 0
     return
 else
-    alpha = 1 / t1;
+    alpha = (-B-sqrt(delta))/(2*A);
+    if alpha < 0
+        alpha = inf;
+    end
 end
-
-% %% quadratic equation
-% detDs= det(Ds);
-% detD = det(D);
-
-% A = detD;
-% B = detDs + detD - det(Ds-D);
-% C = detDs;
-% 
-% delta = B*B - 4*A*C;
-% 
-% if delta < 0
-%     return
-% else
-%     alpha = (-B-sqrt(delta))/(2*A);
-%     if alpha < 0
-%         alpha = inf;
-%     end
-% end
 
 end

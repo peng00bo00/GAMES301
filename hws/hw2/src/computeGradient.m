@@ -1,9 +1,12 @@
 function b = computeGradient(V, F, uv, X1, As, PfPxs)
-%% gradient of symmetric Dirichlet energy
+%% Gradient of symmetric Dirichlet energy
 %% Args:
 %%      V[nV, 3]: vertex coordinates in 3D
 %%      F[nF, 3]: face connectivity
 %%      uv[nV, 2]: vertex coordinates in 2D
+%%      X1[3, 2, nF]: rest pose of each triangle
+%%      As[nF, 1]: triangle areas
+%%      PfPxs[4, 6, nF]: PfPx on different triangle
 %% Returns:
 %%      b[nV*2, 1]: gradient of current parameterization
 

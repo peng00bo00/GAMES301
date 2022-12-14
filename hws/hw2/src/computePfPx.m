@@ -1,6 +1,9 @@
 function PfPx = computePfPx(x1)
-%% Partial derivative of deformation gradient
-%% 
+%% Compute partial derivative of deformation gradient
+%% Args:
+%%      x1: rest pose
+%% Returns:
+%%      PfPx: partial derivative of deformation gradient
 
 Dm = (x1(2:end, :) - x1(1, :))';
 DmInv = matrixInv2x2(Dm);
