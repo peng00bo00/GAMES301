@@ -29,7 +29,7 @@ MB = sparse(repmat((1:nF)', 1, 3), F, B, nF, nV);
 %% pin 2 points on the boundary
 [~, ~, T] = pinBoundary(V, F);
 
-%% swap columns, now the pinned vertices are the last 2 ones
+%% swap columns, now the pinned points are the last 2 ones
 MA = MA * T; MB = MB * T;
 
 M = [MA -MB; MB MA];
@@ -43,7 +43,11 @@ b  =-[Mp1 -Mp2; Mp2 Mp1] * [0; 1; 0; 0];
 %% solve linear system
 uv = AM \ b;
 uv = reshape(uv, [nV-2 2]);
+
+%% fix pinned points
 uv = [uv; [0 0]; [1 0]];
+
+%% transform back to original vertex index
 uv = T * uv;
 
 end
