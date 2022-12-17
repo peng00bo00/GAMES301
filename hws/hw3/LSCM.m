@@ -32,13 +32,12 @@ MB = sparse(repmat((1:nF)', 1, 3), F, B, nF, nV);
 %% swap columns, now the pinned points are the last 2 ones
 MA = MA * T; MB = MB * T;
 
-M = [MA -MB; MB MA];
+%% split free and pinned vertices
+Af = MA(:, 1:nV-2); Ap = MA(:, end-1:end);  %% real part
+Bf = MB(:, 1:nV-2); Bp = MB(:, end-1:end);  %% imag part
 
-Mf1 = M(:, 1:nV-2);  Mf2 = M(:, 1+nV:end-2);
-Mp1 = M(:, nV-1:nV); Mp2 = M(:, end-1:end);
-
-AM = [Mf1 -Mf2; Mf2 Mf1];
-b  =-[Mp1 -Mp2; Mp2 Mp1] * [0; 1; 0; 0];
+AM = [Af -Bf; Bf Af];
+b  =-[Ap -Bp; Bp Ap] * [0; 1; 0; 0];
 
 %% solve linear system
 uv = AM \ b;
@@ -63,7 +62,6 @@ function [b1, b2, T] = pinBoundary(V, F)
 %%      T[nV, nV]: vertex index transform matrix
 
 nV = size(V, 1);
-nF = size(F, 1);
 
 [B, ~] = findBoundary(V, F);
 nB = length(B);
