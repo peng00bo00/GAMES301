@@ -21,8 +21,8 @@ uv2 = MVCTutte(V, F);
 path = fullfile('./results/MVC', [meshName '.obj']);
 writeOBJ(path, [uv2, zeros(nV, 1)], F);
 
-% figure;
-% drawmesh(F, uv1, B);
+figure;
+drawmesh(F, uv1, B);
  
-% figure;
-% drawmesh(F, uv2, B);
+figure;
+drawmesh(F, uv2, B);

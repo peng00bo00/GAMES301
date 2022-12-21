@@ -15,9 +15,9 @@ nB = length(B);
 uv = LSCM(V, F);
 
 %% edges
-E     = reshape(V(F(:, [2, 3, 1]), :) - V(F, :), [size(F), 3]);
-Enorm = vecnorm(E, 2, 3);
-Edir  = E ./ Enorm;
+Es    = reshape(V(F(:, [2, 3, 1]), :) - V(F, :), [size(F), 3]);
+Enorm = vecnorm(Es, 2, 3);
+Edir  = Es ./ Enorm;
 
 %% trigonometry
 coss =-dot(Edir(:, :, :), Edir(:, [3, 1, 2], :), 3);
