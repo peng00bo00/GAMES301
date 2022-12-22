@@ -2,7 +2,7 @@ clc; clear;
 
 %% add path
 addpath('./src');
-addpath('./util');
+addpath('./utils');
 
 %% read mesh
 meshName = 'cow';
