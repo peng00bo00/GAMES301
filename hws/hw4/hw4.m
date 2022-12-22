@@ -19,9 +19,9 @@ nB = length(B);
 % drawmesh(F, V, B);
 
 %% BFF
-% uv = BFFUniform(V, F, B);
-% uv = BFFAuto(V, F, B);
-uv = BFFSquare(V, F, B);
+% uv = BFFUniform(V, F);
+% uv = BFFAuto(V, F);
+uv = BFFSquare(V, F);
 
 figure;
 drawmesh(F, uv, B);

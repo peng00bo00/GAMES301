@@ -1,12 +1,13 @@
-function uv = BFFUniform(V, F, B)
+function uv = BFFUniform(V, F)
 %% Uniformization to a disk with BFF
 %% Args:
 %%      V[nV, 3]: vertices in 3D
 %%      F[nF, 3]: face connectivity
-%%      B[1, nB]: boundary vertex index
-%%      k[nB, 1]: target curvature at the boundary
 %% Returns:
 %%      uv[nV, 2]: uv coordinates
+
+%% find boundary
+[B, ~] = findBoundary(V, F);
 
 nV = size(V, 1);
 Br = circshift(B, -1);
@@ -19,7 +20,7 @@ for i=1:10
     %% set exterior angle proportional to the most recent dual lengths
     k = l / sum(l) * 2 * pi;
     
-    uv = BFFAngle(V, F, B, k);
+    uv = BFFAngle(V, F, k);
     V = [uv zeros(nV, 1)];
 end
 

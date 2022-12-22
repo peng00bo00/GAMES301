@@ -1,14 +1,16 @@
-function uv = BFFScale(V, F, B, u)
+function uv = BFFScale(V, F, u)
 %% Boundary First Flattening with given scale factors
 %% Args:
 %%      V[nV, 3]: vertices in 3D
 %%      F[nF, 3]: face connectivity
-%%      B[1, nB]: boundary vertex index
 %%      u[nB, 1]: target scale factor at the boundary
 %% Returns:
 %%      uv[nV, 2]: uv coordinates
 
 nV = size(V, 1);
+
+%% find boundary
+[B, ~] = findBoundary(V, F);
 
 %% build Laplacian matrix
 A = cotLaplacian(V, F);

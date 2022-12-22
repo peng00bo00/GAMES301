@@ -1,12 +1,14 @@
-function uv = BFFAngle(V, F, B, k)
+function uv = BFFAngle(V, F, k)
 %% Boundary First Flattening with given exterior angles
 %% Args:
 %%      V[nV, 3]: vertices in 3D
 %%      F[nF, 3]: face connectivity
-%%      B[1, nB]: boundary vertex index
 %%      k[nB, 1]: target curvature at the boundary
 %% Returns:
 %%      uv[nV, 2]: uv coordinates
+
+%% find boundary
+[B, ~] = findBoundary(V, F);
 
 nV = size(V, 1);
 
