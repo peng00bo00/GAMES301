@@ -13,7 +13,7 @@ c       = 1e-5;
 tau     = 0.9;
 
 %% read mesh
-meshName = 'ex';
+meshName = 'cow';
 path = fullfile('./mesh/', meshName);
 [V, F] = readObj(path);
 [B, H] = findBoundary(V, F);
@@ -32,9 +32,6 @@ h = drawmesh(F, uv, B);
 
 %% projected Newton solver
 uv = projectedNewtonSolver(V, F, uv, maxSteps, maxIter, lam, c, tau);
-
-% path = fullfile('./gif/', meshName);
-% uv = projectedNewtonSolverSave(V, F, uv, maxSteps, maxIter, lam, c, gamma, path);
 
 %% drawing
 figure;
