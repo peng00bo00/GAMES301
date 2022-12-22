@@ -1,7 +1,7 @@
 clc; clear;
 
 %% read mesh
-meshName = 'hand';
+meshName = 'cow';
 path = fullfile('./mesh/', meshName);
 
 [V, F] = readObj(path);
