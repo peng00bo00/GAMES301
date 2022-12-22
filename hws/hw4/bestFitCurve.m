@@ -7,11 +7,21 @@ function gamma = bestFitCurve(L, Ltarget, k)
 %% Returns:
 %%      gamma[nB, 2]: fitted curve vertex
 
-nB = length(L);
+%% accumulate exterior angles and tangent vectors
+phi = cumsum(k) - k(1);
+T = [cos(phi) sin(phi)]';
 
-N = diag(1./L);
-Ninv = diag(L);
+%% boundary mass matrix
+l = 0.5*(L + circshift(L, 1));     %% dual length
+Ninv = diag(l);
 
-gamma = zeros(nB, 2);
+%% solve optimal length to close the curve
+TNTinv = matrixInv2x2(T * Ninv * T');
+L = Ltarget - Ninv*T'*TNTinv*T*Ltarget;
+
+%% accumulate scaled tangents
+gamma = cumsum(L .* T', 1);
+gamma = circshift(gamma, 1, 1);
+gamma(1,:) = [0 0];
 
 end

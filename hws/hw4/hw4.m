@@ -1,7 +1,7 @@
 clc; clear;
 
 %% read mesh
-meshName = 'cathead';
+meshName = 'hand';
 path = fullfile('./mesh/', meshName);
 
 [V, F] = readObj(path);
@@ -11,4 +11,13 @@ nV = size(V, 1);
 nF = size(F, 1);
 nB = length(B);
 
-I = setdiff(1:nV, B);
+% figure;
+% drawmesh(F, V, B);
+
+%% BFF
+% uv = BFFUniform(V, F, B);
+% uv = BFFAuto(V, F, B);
+uv = BFFSquare(V, F, B);
+
+figure;
+drawmesh(F, uv, B);

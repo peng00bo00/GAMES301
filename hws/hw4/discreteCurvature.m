@@ -17,7 +17,7 @@ Enorm = vecnorm(Es, 2, 3);
 Edir  = Es ./ Enorm;
 
 %% interior angles
-coss =-dot(Edir(:, :, :), Edir(:, [3, 1, 2], :), 3);
+coss   =-dot(Edir(:, :, :), Edir(:, [3, 1, 2], :), 3);
 angles = acos(coss);
 
 %% sum over vertices
