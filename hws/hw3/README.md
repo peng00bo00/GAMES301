@@ -403,7 +403,6 @@ uv = T * uv;
 
 end
 ```
-{: .snippet}
 
 `pinBoundary()`函数实现了选择网格边界的两个固定点的功能，这里我简单地选择了边界的起点和中间点。当然其它的选取方式也是可行的，但需要注意不同的选取方式会影响最终的参数化结果。
 
@@ -435,7 +434,6 @@ T = sparse(tripI, tripJ, tripV, nV, nV);
 
 end
 ```
-{: .snippet}
 
 最后，`doubleArea()`函数给出了计算网格三角形面积的一个向量化实现。和利用循环进行遍历相比，使用向量化的效率会高很多。
 
@@ -455,7 +453,6 @@ As = vecnorm(cross(Es(:,1,:), Es(:, 2, :), 3), 2, 3);
 
 end
 ```
-{: .snippet}
 
 ### Results
 
@@ -568,7 +565,6 @@ uv = A \ b;
 
 end
 ```
-{: .snippet}
 
 ### Results
 
