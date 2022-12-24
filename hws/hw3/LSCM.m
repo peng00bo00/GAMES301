@@ -27,31 +27,26 @@ MA = sparse(repmat((1:nF)', 1, 3), F, A, nF, nV);
 MB = sparse(repmat((1:nF)', 1, 3), F, B, nF, nV);
 
 %% pin 2 points on the boundary
-[~, ~, T] = pinBoundary(V, F);
-
-%% swap columns, now the pinned points are the last 2 ones
-MA = MA * T; MB = MB * T;
+[b1, b2] = pinBoundary(V, F);
 
 %% split free and pinned vertices
-Af = MA(:, 1:nV-2); Ap = MA(:, end-1:end);  %% real part
-Bf = MB(:, 1:nV-2); Bp = MB(:, end-1:end);  %% imag part
+p = [b1 b2]; f = setdiff(1:nV, p);
+Af = MA(:, f); Ap = MA(:, p);  %% real part
+Bf = MB(:, f); Bp = MB(:, p);  %% imag part
 
 AM = [Af -Bf; Bf Af];
 b  =-[Ap -Bp; Bp Ap] * [0; 1; 0; 0];
 
 %% solve linear system
-uv = AM \ b;
-uv = reshape(uv, [nV-2 2]);
+uv = zeros(nV, 2);
+uv(f, :) = reshape(AM \ b, [nV-2 2]);
 
 %% fix pinned points
-uv = [uv; [0 0]; [1 0]];
-
-%% transform back to original vertex index
-uv = T * uv;
+uv(p, :) = [[0 0]; [1 0]];
 
 end
 
-function [b1, b2, T] = pinBoundary(V, F)
+function [b1, b2] = pinBoundary(V, F)
 %% A helper function to pin 2 points on the boundary
 %% Args:
 %%      V[nV, 3]: vertices in 3D
@@ -59,9 +54,6 @@ function [b1, b2, T] = pinBoundary(V, F)
 %% Returns:
 %%      b1: pinned boundary vertex
 %%      b2: pinned boundary vertex
-%%      T[nV, nV]: vertex index transform matrix
-
-nV = size(V, 1);
 
 [B, ~] = findBoundary(V, F);
 nB = length(B);
@@ -78,12 +70,5 @@ nB = length(B);
 
 %% select the first and middle boundary points
 b1 = B(1); b2 = B(round(nB/2));
-
-%% sparse index transform matrix
-tripI = 1:nV; tripJ = 1:nV; tripV = ones(1, nV);
-tripJ([b1 end-1]) = tripJ([end-1 b1]);
-tripJ([b2 end])   = tripJ([end b2]);
-
-T = sparse(tripI, tripJ, tripV, nV, nV);
 
 end

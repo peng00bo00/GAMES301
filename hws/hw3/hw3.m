@@ -2,7 +2,7 @@
 clc; clear;
 
 %% read mesh
-meshName = 'cathead';
+meshName = 'cow';
 path = fullfile('./mesh/', meshName);
 [V, F] = readObj(path);
 [B, ~] = findBoundary(V, F);
