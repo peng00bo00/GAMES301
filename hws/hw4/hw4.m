@@ -5,7 +5,7 @@ addpath('./src');
 addpath('./utils');
 
 %% read mesh
-meshName = 'cow';
+meshName = 'face';
 path = fullfile('./mesh/', meshName);
 
 [V, F] = readObj(path);
