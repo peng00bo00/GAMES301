@@ -1,6 +1,10 @@
 %% clear
 clc; clear;
 
+%% add path
+addpath('./src');
+addpath('./utils');
+
 %% read mesh
 meshName = 'cow';
 path = fullfile('./mesh/', meshName);
