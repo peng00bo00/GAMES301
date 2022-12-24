@@ -102,7 +102,6 @@ J = Ds * matrixInv2x2(Dm);
 
 end
 ```
-{: .snippet}
 
 ### Compute Rest Pose
 
@@ -135,7 +134,6 @@ uv = uv(1:2, :)';
 
 end
 ```
-{: .snippet}
 
 ### Symmetric Dirichlet Energy
 
@@ -188,7 +186,6 @@ Sigma = Sigma * L;
 
 end
 ```
-{: .snippet}
 
 利用`svd_rv()`函数可以非常容易地定义极分解：
 
@@ -204,7 +201,6 @@ S = V * Sigma * V';
 
 end
 ```
-{: .snippet}
 
 分理出旋转后就可以直接使用$\mathbf{S}$矩阵来定义变形能。**对称Dirichlet能量(symmetric Dirichlet energy)**是几何处理中非常流行的能量函数，它是由变形梯度的两个奇异值来定义的：
 
@@ -236,7 +232,6 @@ E = 0.5*E;
 
 end
 ```
-{: .snippet}
 
 而整个三角网格上我们一般会对每个三角形的变形能量按照它原来的面积进行加权：
 
@@ -274,7 +269,6 @@ end
 
 end
 ```
-{: .snippet}
 
 ### Projected Newton Method
 
@@ -336,7 +330,6 @@ a = reshape(A, rows * cols , 1);
 
 end
 ```
-{: .snippet}
 
 ### Algorithm Framework
 
@@ -395,7 +388,6 @@ end
 
 end
 ```
-{: .snippet}
 
 ```matlab
 function [uv_new, stop] = projectedNewtonStep(V, F, uv, X1, As, PfPxs, maxIter, lam, c, tau)
@@ -446,7 +438,6 @@ fprintf("SD Energy: %.2e \tgradient: %.2e \talpha: %.2e\n", E, norm(b), alpha);
 
 end
 ```
-{: .snippet}
 
 ## Gradient
 
@@ -583,7 +574,6 @@ PphiPf = PIPf * PphiPI;
 
 end
 ```
-{: .snippet}
 
 ### Compute $$\frac{\partial \mathbf{f}}{\partial \mathbf{x}}$$
 
@@ -765,7 +755,6 @@ PfPx(4, 1) =      0; PfPx(4, 2) = -(c+d); PfPx(4, 3) = 0; PfPx(4, 4) = c; PfPx(4
 
 end
 ```
-{: .snippet}
 
 ### Compute Gradient
 
@@ -832,7 +821,6 @@ b = reshape(b, [nV*2, 1]);
 
 end
 ```
-{: .snippet}
 
 ## Hessian
 
@@ -974,7 +962,6 @@ lams(:, 4) = vec(T);
 
 end
 ```
-{: .snippet}
 
 ### Compute Hessian
 
@@ -1091,7 +1078,6 @@ H = sparse(I, J, Value, nV*2, nV*2);
 
 end
 ```
-{: .snippet}
 
 ## Line Search
 
@@ -1170,7 +1156,6 @@ end
 
 end
 ```
-{: .snippet}
 
 ```matlab
 function alpha = flipCheckStepSize(x, dx)
@@ -1207,7 +1192,6 @@ end
 
 end
 ```
-{: .snippet}
 
 ### Armijo–Goldstein Condition
 
@@ -1267,7 +1251,6 @@ end
 
 end
 ```
-{: .snippet}
 
 ## Results
 
